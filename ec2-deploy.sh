@@ -1,21 +1,22 @@
 #!/bin/bash
 
-for repo in $(cat ./sync-fork.txt)
+for repo in $(cat ./ec2-deploy.txt)
 
 do
-	echo Syncing fork: $repo
-  echo ---------------------
+  if [ -d $repo ]; then
+    echo Ec2 deploy: $repo
+    echo ---------------------
 
-  cd $repo
+    cd $repo
 
-  for BRANCH in `git branch --list|sed 's/\*//g'`;
-    do
-      git checkout $BRANCH
-      sh ./ec2.sh deploy
-    done
+    for BRANCH in `git branch --list|sed 's/\*//g'`;
+      do
+        git checkout $BRANCH
+        sh ./ec2.sh deploy
+      done
 
-  git checkout dev
+    git checkout dev
 
-  cd ../
-
+    cd ../
+  fi
 done
